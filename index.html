@@ -2,13 +2,35 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Via Surf | Surf & Streetwear Premium</title>
-    <meta name="description" content="A melhor loja de surf e streetwear do Brasil. Encontre pranchas, skates, roupas e acessórios das melhores marcas. Frete grátis para todo o país." />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Via Surf | Loja de Surf e Streetwear Premium em Viamão</title>
+    <meta name="description" content="A melhor loja de surf e streetwear do Brasil. Encontre pranchas, skates, roupas e acessórios das marcas Oakley, Quiksilver, Vans e mais." />
+    <meta name="keywords" content="surf shop, streetwear, loja de skate, pranchas de surf, roupas urbanas, Viamão, moda street" />
+    
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://viasurf.com.br/" />
+    <meta property="og:title" content="Via Surf | Surf & Streetwear Premium" />
+    <meta property="og:description" content="Sua loja oficial de Surf e Skate. Produtos originais e as melhores marcas do mercado." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1502680390469-be75c86b636f?q=80&w=1200&auto=format&fit=crop" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://viasurf.com.br/" />
+    <meta property="twitter:title" content="Via Surf | Surf & Streetwear Premium" />
+    <meta property="twitter:description" content="Sua loja oficial de Surf e Skate. Produtos originais e as melhores marcas do mercado." />
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1502680390469-be75c86b636f?q=80&w=1200&auto=format&fit=crop" />
+    
+    <!-- Fontes do Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuração do Tema -->
     <script>
       tailwind.config = {
         theme: {
@@ -18,65 +40,74 @@
               display: ['Oswald', 'sans-serif'],
             },
             colors: {
-              ocean: {
-                50: '#f0f9ff',
-                100: '#e0f2fe',
-                500: '#0ea5e9',
-                600: '#0284c7',
-                900: '#0c4a6e',
-              },
               street: {
                 900: '#111827',
                 800: '#1f2937',
-                accent: '#F97316' // Orange
+                accent: '#F97316' // Laranja vibrante
               }
             }
           }
         }
       }
     </script>
-    <style>
-      /* Custom scrollbar for webkit */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #f1f1f1;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #555;
-      }
-      .animate-fade-in-up {
-        animation: fadeInUp 0.8s ease-out forwards;
-      }
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
+
+    <!-- Schema.org JSON-LD para Negócio Local -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": "Via Surf",
+      "image": [
+        "https://images.unsplash.com/photo-1502680390469-be75c86b636f?q=80&w=2070&auto=format&fit=crop"
+       ],
+      "description": "Loja referência em surf, skate e streetwear com produtos 100% originais.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Av. Senador Salgado Filho, 1800 - loja 02",
+        "addressLocality": "Viamão",
+        "addressRegion": "RS",
+        "postalCode": "94475-000",
+        "addressCountry": "BR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -30.081,
+        "longitude": -51.033
+      },
+      "url": "https://viasurf.com.br",
+      "telephone": "+555134443574",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+          ],
+          "opens": "09:00",
+          "closes": "21:00"
         }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+      ],
+      "priceRange": "$$"
+    }
+    </script>
+
+    <script type="importmap">
+    {
+      "imports": {
+        "react/": "https://esm.sh/react@^19.2.3/",
+        "react": "https://esm.sh/react@^19.2.3",
+        "lucide-react": "https://esm.sh/lucide-react@^0.561.0",
+        "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
       }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.33.0",
-    "lucide-react": "https://esm.sh/lucide-react@0.460.0"
-  }
-}
-</script>
-</head>
-  <body class="bg-slate-50 text-slate-900 antialiased selection:bg-ocean-500 selection:text-white">
+    }
+    </script>
+  </head>
+  <body>
     <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>

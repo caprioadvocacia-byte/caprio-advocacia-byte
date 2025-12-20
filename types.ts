@@ -1,47 +1,25 @@
 export interface Product {
-  id: string;
+  id: number;
   name: string;
-  category: 'Surf' | 'Street' | 'Acessórios';
-  price: number;
+  price: string;
   image: string;
-  isNew?: boolean;
+  category: string;
+  tag?: string;
+  description?: string; // Adicionado descrição
 }
 
-export interface ReleaseCategory {
+export interface Collection {
   id: string;
   title: string;
+  description?: string;
   products: Product[];
 }
 
 export interface BlogPost {
-  id: string;
+  id: number;
   title: string;
   excerpt: string;
-  date: string;
-  category: string;
   image: string;
-}
-
-export interface Review {
-  id: string;
-  name: string;
-  rating: number;
-  comment: string;
   date: string;
-  avatar?: string;
-}
-
-export interface ChatMessage {
-  role: 'user' | 'model';
-  text: string;
-  isError?: boolean;
-}
-
-export enum SECTION_ID {
-  HERO = 'hero',
-  PRODUCTS = 'produtos',
-  ABOUT = 'sobre',
-  BLOG = 'blog',
-  REVIEWS = 'avaliacoes',
-  CONTACT = 'contato'
+  author: string;
 }

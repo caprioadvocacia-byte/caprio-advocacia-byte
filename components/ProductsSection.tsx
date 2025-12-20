@@ -1,143 +1,110 @@
-import React, { useState, useEffect } from 'react';
-import { Settings, Plus, Save, Layers, XCircle, SearchX } from 'lucide-react';
+import React from 'react';
 import ProductCard from './ProductCard';
-import { FEATURED_PRODUCTS } from '../constants';
-import { Product, SECTION_ID } from '../types';
+import { Collection } from '../types';
+import { Edit } from 'lucide-react';
 
 interface ProductsSectionProps {
-  onNavigateToReleases?: () => void;
-  searchQuery?: string;
-  onClearSearch?: () => void;
+  collections: Collection[];
+  activeTabId: string;
+  setActiveTabId: (id: string) => void;
+  onOpenAdmin: () => void;
 }
 
 const ProductsSection: React.FC<ProductsSectionProps> = ({ 
-  onNavigateToReleases, 
-  searchQuery = '', 
-  onClearSearch 
+  collections, 
+  activeTabId, 
+  setActiveTabId, 
+  onOpenAdmin 
 }) => {
-  const [products, setProducts] = useState<Product[]>(FEATURED_PRODUCTS);
-  const [isEditing, setIsEditing] = useState(false);
-
-  // Filter products based on search query
-  const filteredProducts = products.filter(product => 
-    product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    product.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const handleUpdateProduct = (id: string, field: keyof Product, value: any) => {
-    setProducts(prev => prev.map(p => 
-      p.id === id ? { ...p, [field]: value } : p
-    ));
-  };
-
-  const handleDeleteProduct = (id: string) => {
-    if (window.confirm('Tem certeza que deseja remover este produto?')) {
-      setProducts(prev => prev.filter(p => p.id !== id));
-    }
-  };
-
-  const handleAddProduct = () => {
-    const newProduct: Product = {
-      id: Date.now().toString(),
-      name: 'Novo Produto',
-      category: 'Street',
-      price: 0.00,
-      image: 'https://picsum.photos/400/500?grayscale', // Placeholder
-      isNew: true
-    };
-    setProducts([...products, newProduct]);
-  };
+  
+  // Encontra a coleção ativa baseada no ID selecionado ou fallback para a primeira
+  const activeCollection = collections.find(c => c.id === activeTabId) || collections[0];
 
   return (
-    <section id={SECTION_ID.PRODUCTS} className="py-20 container mx-auto px-4">
-      <div className="flex flex-col items-center mb-16 relative">
-        <h2 className="font-display font-bold text-4xl text-street-900 uppercase tracking-tighter mb-4 text-center">
-          {searchQuery ? `Resultados para "${searchQuery}"` : 'Destaques da Temporada'}
-        </h2>
-        <div className="w-20 h-1 bg-street-accent mx-auto mb-4"></div>
-        
-        {/* Search Clear Button */}
-        {searchQuery && onClearSearch && (
+    // Adicionado scroll-mt-28 para que o header fixo não cubra o título ao navegar
+    <section id="colecoes" className="py-16 md:py-20 container mx-auto px-4 min-h-[600px] scroll-mt-28">
+      <div className="text-center mb-10 relative">
+        <h2 className="font-display font-bold text-3xl md:text-4xl text-gray-900 uppercase tracking-tighter mb-4 inline-flex items-center gap-4">
+          Nossas Coleções
           <button 
-            onClick={onClearSearch}
-            className="flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors mb-4"
+            onClick={onOpenAdmin}
+            className="md:hidden bg-gray-100 p-2 rounded-full text-gray-600 hover:text-orange-500 hover:bg-gray-200 transition-colors"
+            title="Editar Coleções"
           >
-            <XCircle size={18} /> Limpar busca
+            <Edit size={20} />
           </button>
-        )}
-
-        <div className="flex flex-wrap justify-center gap-4 mt-2">
-          {/* Edit Home Products Toggle */}
+        </h2>
+        <div className="w-16 md:w-24 h-1 bg-orange-500 mx-auto"></div>
+        
+        {/* Botão de Edição Desktop (Flutuante ao lado do título ou abaixo) */}
+        <div className="hidden md:block absolute right-0 top-0">
           <button 
-            onClick={() => setIsEditing(!isEditing)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all ${
-              isEditing 
-                ? 'bg-green-500 text-white hover:bg-green-600' 
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
+            onClick={onOpenAdmin}
+            className="flex items-center gap-2 text-xs font-bold uppercase text-gray-400 hover:text-orange-500 transition-colors border border-gray-200 hover:border-orange-500 px-3 py-1 rounded-full"
           >
-            {isEditing ? (
-              <> <Save size={16} /> Salvar Destaques </>
-            ) : (
-              <> <Settings size={16} /> Editar Destaques </>
-            )}
+            <Edit size={14} /> Editar Produtos
           </button>
         </div>
       </div>
-      
-      {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {filteredProducts.map((product) => (
-            <ProductCard 
-              key={product.id} 
-              product={product} 
-              isEditing={isEditing}
-              onUpdate={handleUpdateProduct}
-              onDelete={handleDeleteProduct}
-            />
-          ))}
 
-          {/* Add Product Button (Only in Edit Mode and if not filtering) */}
-          {isEditing && !searchQuery && (
-            <div 
-              onClick={handleAddProduct}
-              className="border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center p-8 cursor-pointer hover:border-street-accent hover:bg-orange-50 transition-all min-h-[400px]"
-            >
-              <div className="bg-white p-4 rounded-full shadow-sm mb-4">
-                <Plus size={32} className="text-street-accent" />
-              </div>
-              <span className="font-bold text-gray-500 uppercase tracking-wider">Adicionar Produto</span>
+      {/* Abas de Navegação (Coleções) */}
+      <div className="flex flex-wrap justify-center gap-4 mb-12">
+        {collections.map((collection) => (
+          <button
+            key={collection.id}
+            onClick={() => setActiveTabId(collection.id)}
+            className={`px-6 py-2 rounded-full text-sm md:text-base font-bold uppercase tracking-wide transition-all duration-300 ${
+              activeCollection?.id === collection.id
+                ? 'bg-black text-white shadow-lg scale-105'
+                : 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-900'
+            }`}
+          >
+            {collection.title}
+          </button>
+        ))}
+      </div>
+
+      {/* Conteúdo da Aba Ativa */}
+      {activeCollection && (
+        <div className="animate-fade-in-up">
+          {/* Descrição da Coleção */}
+          {activeCollection.description && (
+            <p className="text-center text-gray-500 mb-8 -mt-6 italic">
+              {activeCollection.description}
+            </p>
+          )}
+
+          {/* Grid de Produtos */}
+          {activeCollection.products.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+              {activeCollection.products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 text-gray-400">
+              <p>Nenhum produto nesta coleção no momento.</p>
+              <button 
+                onClick={onOpenAdmin} 
+                className="mt-4 text-orange-500 font-bold hover:underline"
+              >
+                Adicionar Produto Agora
+              </button>
             </div>
           )}
         </div>
-      ) : (
-        <div className="text-center py-20 bg-gray-50 rounded-lg border border-gray-100">
-          <div className="inline-block p-4 bg-gray-100 rounded-full mb-4">
-            <SearchX size={48} className="text-gray-400" />
-          </div>
-          <h3 className="text-xl font-bold text-gray-700 mb-2">Nenhum produto encontrado</h3>
-          <p className="text-gray-500">Tente buscar por termos como "Surf", "Street" ou nomes de produtos.</p>
-          {onClearSearch && (
-            <button 
-              onClick={onClearSearch}
-              className="mt-6 text-street-accent font-bold hover:underline"
-            >
-              Ver todos os produtos
-            </button>
-          )}
-        </div>
       )}
       
-      {!isEditing && !searchQuery && (
-        <div className="text-center mt-12">
-          <button 
-            onClick={onNavigateToReleases}
-            className="border-2 border-street-900 text-street-900 px-10 py-3 uppercase font-bold tracking-wider hover:bg-street-900 hover:text-white transition-all"
-          >
-            Coleções e Lançamentos
-          </button>
-        </div>
-      )}
+      <div className="text-center mt-16">
+        <a 
+          href="https://wa.me/555134443574" 
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block border-2 border-gray-900 text-gray-900 px-8 py-3 md:px-10 md:py-3 text-sm md:text-base uppercase font-bold tracking-wider hover:bg-gray-900 hover:text-white transition-all duration-300"
+        >
+          Falar com Vendedor
+        </a>
+      </div>
     </section>
   );
 };

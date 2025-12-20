@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap (opcional, mas recomendado futuramente)
+# Sitemap: https://viasurf.com.br/sitemap.xml
